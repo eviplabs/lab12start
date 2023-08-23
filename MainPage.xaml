@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:LAB12_MAUI_ThreadingLab"
+             x:Class="LAB12_MAUI_ThreadingLab.MainPage">
+
+    <VerticalStackLayout
+        Spacing="25"
+        VerticalOptions="Center">
+        <StackLayout Orientation="Horizontal" Spacing="5">
+            <Button Text="Blocker" Clicked="Blocker_Clicked" HeightRequest="50" />
+            <Button Text="Start!" Clicked="Start_Clicked" HeightRequest="50" />
+            <CheckBox />
+        </StackLayout>
+        <Label Text="Progress 1:" />
+        <ProgressBar x:Name="ProgressBar1" ProgressColor="Red" Progress="0" HeightRequest="50" />
+        <Label Text="Progress 2:" />
+        <ProgressBar x:Name="ProgressBar2" ProgressColor="Green" Progress="0" HeightRequest="50" />
+        <Label Text="Event list:" />
+        <CollectionView x:Name="EventListView" ItemsSource="{Binding Events}" HeightRequest="200"
+                        ItemsUpdatingScrollMode="KeepLastItemInView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Label Text="{Binding}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>        
+    </VerticalStackLayout>
+</ContentPage>
