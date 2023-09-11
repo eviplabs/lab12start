@@ -3,6 +3,7 @@
 
 
 **Ellenőrzési lista**
+- Megadtad a Neptun kódodat a neptun.txt fájlban.
 - A pull request címe utal a tartalomra. Pl. LAB05, HF1A
 - A pull requestben csak azok a változások szerepelnek, amiket a megoldás során te hajtottál végre. A bin és obj könyvtár tartalma ugye nincsen benne?
 - A forráskódban nincsennek kikommentezett kódrészletek.
