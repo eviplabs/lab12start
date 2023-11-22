@@ -12,9 +12,9 @@ Az otthoni felkészülés az alábbi lépésekből áll:
 - A Moodle alatt kiadott anyagok áttekintése.
 - Olvasd el ezt a mérési útmutatót, hogy ne a laboron lásd először.
 - Olvasd el az alábbi leírást az async-await mintáról:
-https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
+https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
 - A mérés során szükséged lesz a Dispatcher és CancellationToken használatára, így ennek leírását is olvasd el:
-https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads
+https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads
 (Elég az elejétől a "Code Example" résszel bezárólag.)
 - Töltsd ki a Moodleben a kapcsolódó tesztet.
 
@@ -24,11 +24,11 @@ A labor közben
 - Folyamatosan (legalább minden feladat után) commitolj.
 - FONTOS: A feladatok futási eredményéről készíts screenshotot és ezeket sorszámozva mentsd el egy "screenshots" könyvtárba. Olyan screenshotokat készíts, melyen látszik az előre lépés az előző feladathoz képest. (Ha a UI-on semmi változás nem látszik, akkor kihagyhatod a screenshotot.)
 
-A labor végén
+A labor elkészítésének végén
 - Ne felejtsd el felpusholni a munkádat.
 - Githubon hozz létre egy pull requestet, amiben pontosan a laboron elvégzett változások láthatók.
 
-A labor vége, mint határidő a commitok pusholására és a pull request beküldésére vonatkozik.
+A határidő a commitok pusholására és a pull request beküldésére vonatkozik.
 
 ## 0. feladat: a UI thread blokkolása
 
@@ -46,15 +46,15 @@ Mivel a háttérmunkát most a UI threaden végezzük, bár rendszeresen frissí
 
 Alakítsd át a DoIt metódust async metódussá (ekkor a visszatérési érték ``Task`` kell, hogy legyen), a "Start!" nyomógomb eseménykezelőjét pedig úgy, hogy ezt hívja meg. Async metódusok nevének a vége mindig Async (kódolási konvenció), így nevezd át DoItAsync-ra. (Átnevezés után Ctrl+. segítségével kérd meg a Visual Studiot, hogy minden hívási helyen írja át a nevét.)
 
-Ahhoz, hogy a ``Start_Click`` metódusban lehessen await, fontos, hogy ő is async metódus legyen. (Ezzel szólunk a fordítónak, hogy olyan metódus kódot kell neki generálni, ami támogatja az async-await mechanizmust.)
+Ahhoz, hogy a ``Start_Clicked`` metódusban lehessen await, fontos, hogy ő is async metódus legyen. (Ezzel szólunk a fordítónak, hogy olyan metódus kódot kell neki generálni, ami támogatja az async-await mechanizmust.)
 
 Ha az egeret a DoItAsync metódusban ráhúzod a ``Task.Delay(500).Wait();`` Delay-jére, az IntelliSense is mutatja, hogy a metódus "awaitable". Írd át úgy, hogy a végén lévő (blokkoló) ``Wait()`` hívás helyett ennek a lefutását is az ``await`` kulcsszóval várd meg.
 
 Próbáld ki az alkalmazást! Bár a munka még mindig a UI threaden fut (az async hívás csak a futás megszakítását teszi lehetővé, nem rakja át másik szálra), mivel a várakozások közben blokkolás helyett hagyjuk szóhoz jutni a UI threaden a többi eseményt is (pl. UI újrarajolása), a ProgressBar most már szépen frissül menet közben is.
 
-## 3. feladat: az esemény lista frissítése
+## 3. feladat: az eseménylista frissítése
 
-Egészítsd ki a ``DoItAsync`` metódust, hogy az előre haladás reportolása mellett az ``Events`` lista elemeihoz is adjon hozzá egy új sort, amiben szövegesen leírja, hogy halad és most hány százaléknál tart.
+Egészítsd ki a ``DoItAsync`` metódust, hogy az előre haladás reportolása mellett az ``Events`` lista elemeihez is adjon hozzá egy új sort, amiben szövegesen leírja, hogy folyamatban van, és hogy éppen hány százaléknál tart.
 
 ## 4. feladat: visszatérés a blokkoló várakozásra
 
@@ -102,7 +102,7 @@ Ez csak egy rövid kísérlet: mivel a Start nyomógomb eseménykezelője hátt�
 
 ## 9. feladat: két ProgressBar, két háttérfolyamat
 
-Egészítsd ki a "Start!" eseménykezelőjét, hogy két ``SlowBackgroundProcessor`` példányt hozzon létre. Ezekből csak az egyik írjon az Events listába, a másiknak null-t adj át és a DoItAsync metódusban kezeld le, hogy az Events lehet null. Az egyik háttér task az első, a második a második ProgressBar-ra küldje, hogy hol jár.
+Egészítsd ki a "Start!" eseménykezelőjét, hogy két ``SlowBackgroundProcessor`` példányt hozzon létre. Ezekből csak az egyik írjon az Events listába, a másiknak null-t adj át és a DoItAsync metódusban kezeld le, hogy az Events lehet null. Az egyik háttértask az első, a második a második ProgressBar-ra küldje, hogy hol jár.
 
 A két taskot egyszerre (közvetlenül egymás után) indítsd el.
 
@@ -110,17 +110,17 @@ Próbáld ki, hogyan működik! A két ProgressBar egyszerre halad előre.
 
 ## 10. feladat: Taskok egymás utáni futtatása
 
-A Task.Run visszatérési értéke Task, aminek pedig van egy csomó hasznos metódusa. Az online dokumentációban nézd meg, melyik az a metódus, amit ha meghívsz a Task.Run visszatérési értékére, akkor megadhatsz egy másik feladatot (lambda kifejezést), amit megint csak egy háttér task-ban fog elindítani, csak éppen nem azonnal, hanem akkor, amikor az első véget ért.
+A Task.Run visszatérési értéke Task, aminek pedig van egy csomó hasznos metódusa. Az online dokumentációban nézd meg, melyik az a metódus, amit ha meghívsz a Task.Run visszatérési értékére, akkor megadhatsz egy másik feladatot (lambda kifejezést), amit megint csak egy háttértask-ban fog elindítani, csak éppen nem azonnal, hanem akkor, amikor az első véget ért.
 
 Próbáld ki az alkalmazást. Most a zöld progress bar akkor kezd el növekedni, amikor a piros már készen van.
 
 ## 11. feladat: cancel funkcionalitás
 
 Gyakran előfordul, hogy a felhasználó szeretné megállítani a háttérfolyamatokat. Olvasd el a
-https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads
+https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads
 oldal elejét a "Code Example" résszel bezárólag!
 
-Jelen esetben a ``Start_Click`` fogja létrehozni a CancellationTokenSource-t, amit egy osztály szintű attribútumban kell eltárolni, mivel a ``Cancel_Click`` eseménykezelő fog majd ennek szólni, hogy szakítsa meg a háttérfolyamatot.
+Jelen esetben a ``Start_Clicked`` fogja létrehozni a CancellationTokenSource-t, amit egy osztályszintű attribútumban kell eltárolni, mivel a ``Cancel_Clicked`` eseménykezelő fog majd ennek szólni, hogy szakítsa meg a háttérfolyamatot. Hozz létre egy új Buttont, és kösd hozzá a ``Cancel_Clicked`` eseménykezelőhöz!
 
 Ahhoz, hogy a DoItAsync tudja figyelni a CancellationToken-t, át kell neki adnunk paraméterként a CancellationTokenSource.Token értékét.
 
@@ -131,8 +131,4 @@ Csak a piros progress bar legyen megszakítható, vagyis csak az első task ind�
 A CancellationToken alapvetően csak jelezni tud, a DoItAsync-nek kell figyelnie rá és reagálni, vagyis a token semmire nem kötelezi a háttérszálakat.
 A belső ciklusban a Task.Delay hívása után vizsgáld meg, hogy a token kér-e cancelt-t. Ha igen, akkor a háttérszálat egy OperationCanceledException dobásával szokás leállítani, ami konstruktor paraméterként megkapja a CancellationToken-t is.
 
-Figyelj a fenti leírásban lévő "Cancellation in Managed Threads", fontosnak jelölt részekre. Valamit még meg kell tenni a CancellationTokennel, mielőtt véget ér a program. De csak akkor, miután már biztos nem használjuk. Hol érdemes ezt megtenni? Gondolj arra, hogy a zöld progress bar is csak akkor kezd el haladni, amikor a piros már véget ért.
-
-
-
-
+Figyelj a fenti leírásban lévő "Cancellation in Managed Threads" fontosnak jelölt részeire. Valamit még meg kell tenni a CancellationTokennel, mielőtt véget ér a program. De csak akkor, miután már biztos nem használjuk. Hol érdemes ezt megtenni? Gondolj arra, hogy a zöld progress bar is csak akkor kezd el haladni, amikor a piros már véget ért.
